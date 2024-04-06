@@ -11,8 +11,11 @@ import {
   Text,
   Link,
 } from "@chakra-ui/react";
+import { useAuth } from "../AuthContext";
 
 const Login = () => {
+  const { login } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast();
@@ -36,6 +39,8 @@ const Login = () => {
       if (response.ok) {
         await response.json(); // Assuming your server responds with JSON
         // Handle login success
+        login();
+
         toast({
           title: "Login successful.",
           description: "You're now logged into your account.",

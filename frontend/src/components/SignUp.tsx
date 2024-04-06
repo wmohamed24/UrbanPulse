@@ -1,21 +1,29 @@
 import React, { useState } from "react";
 import {
   Box,
-  FormControl,
-  FormLabel,
-  Input,
   Button,
   VStack,
   Heading,
   useToast,
   Text,
   Link,
+  Divider,
 } from "@chakra-ui/react";
+import InputField from "./InputField";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [disabilityType, setDisabilityType] = useState("");
   const toast = useToast();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,12 +38,19 @@ const SignUp = () => {
         body: JSON.stringify({
           email: email,
           password: password,
+          firstName: firstName,
+          lastName: lastName,
+          address: address,
+          occupation: occupation,
+          phoneNumber: phoneNumber,
+          disabilityType: disabilityType,
         }),
       });
 
       if (response.ok) {
         await response.json(); // Assuming your server responds with JSON
         // Handle successful account creation
+        navigate("/login");
         toast({
           title: "Account created.",
           description: "We've created your account for you.",
@@ -43,11 +58,7 @@ const SignUp = () => {
           duration: 9000,
           isClosable: true,
         });
-        // Redirect to login page after successful sign up
-        // window.location.href = '/login'; // Adjust according to your routing setup
       } else {
-        // If the server returns a non-200 status code, consider it a failure
-        // Optionally, parse response to display a more specific error message
         throw new Error("Failed to create account");
       }
     } catch (error) {
@@ -67,22 +78,59 @@ const SignUp = () => {
       <Heading mb={6}>Sign Up</Heading>
       <form onSubmit={handleSubmit}>
         <VStack spacing={4}>
-          <FormControl isRequired>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </FormControl>
+          <InputField
+            label="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            isRequired={true}
+          />
+          <InputField
+            label="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            isRequired={true}
+          />
+          <InputField
+            label="Address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            isRequired={true}
+          />
+          <InputField
+            label="Occupation"
+            value={occupation}
+            onChange={(e) => setOccupation(e.target.value)}
+            isRequired={true}
+          />
+          <InputField
+            label="Phone Number"
+            type="tel"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            isRequired={true}
+          />
+          <InputField
+            label="Type of Disability"
+            value={disabilityType}
+            onChange={(e) => setDisabilityType(e.target.value)}
+            isRequired={true}
+          />
+          <Divider marginY={5}></Divider>
+          <InputField
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            isRequired={true}
+          />
+          <InputField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            isRequired={true}
+          />
+
           <Button type="submit" colorScheme="teal" width="full" mt={4}>
             Sign Up
           </Button>
