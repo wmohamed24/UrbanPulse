@@ -10,10 +10,16 @@ import {
   HStack,
   Spinner,
 } from "@chakra-ui/react";
-import { EmailIcon, PhoneIcon, InfoIcon } from "@chakra-ui/icons";
+import {
+  EmailIcon,
+  PhoneIcon,
+  InfoIcon,
+  InfoOutlineIcon,
+} from "@chakra-ui/icons";
 import LocationSharingToggle from "./LocationSharingToggle";
 import { useAuth } from "../AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { IconButton } from "@chakra-ui/react";
 
 interface UserProfile {
   firstName: string;
@@ -26,11 +32,12 @@ interface UserProfile {
 }
 
 const Profile = () => {
-  const { isLoggedIn, logout, userId } = useAuth();
+  const { isLoggedIn, logout, userId, onTrip } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLocationSharingEnabled, setIsLocationSharingEnabled] =
     useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -85,7 +92,20 @@ const Profile = () => {
         borderRadius="md"
         w={["95%", "85%", "75%", "65%", "55%"]} // Responsive width
         maxW="800px" // Maximum width
+        position="relative" // Make this a relative container for absolute positioning
       >
+        {/* IconButton for settings or similar action */}
+        {onTrip ? (
+          <IconButton
+            icon={<InfoOutlineIcon />}
+            aria-label="on_move"
+            position="absolute"
+            top={4}
+            right={4}
+            colorScheme="teal"
+            onClick={() => navigate("/feedbackform")}
+          />
+        ) : null}
         <VStack spacing={4} align="stretch">
           <Image
             borderRadius="full"

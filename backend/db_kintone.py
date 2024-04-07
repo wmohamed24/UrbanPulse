@@ -7,10 +7,10 @@ def get_kintone_record(record_id, app_id):
     with open('api.yaml', 'r') as file:
         data_loaded = yaml.safe_load(file)
 
-    kintone_api = data_loaded['kintone_api']
+    kintone_users_api = data_loaded['kintone_users_api']
     url = "https://urban-pulse.kintone.com/k/v1/record.json"
     headers = {
-        'X-Cybozu-API-Token': kintone_api,
+        'X-Cybozu-API-Token': kintone_users_api,
     }
     params = {
         'app': app_id,
@@ -34,7 +34,7 @@ def check_credentials(email, password, records):
             hashed_password = record['password']['value']
             # The password field from Kintone record includes the hash type and hash parameters, hence split by '$'
             if hashed_password and check_password_hash(hashed_password, password):
-                return True, record['id']['value']
+                return True, record['id']['value'], record['on_trip']['value']
 
     return False
 
@@ -43,11 +43,11 @@ def add_user_to_kintone(data):
     with open('api.yaml', 'r') as file:
         data_loaded = yaml.safe_load(file)
 
-    kintone_api = data_loaded['kintone_api']
+    kintone_users_api = data_loaded['kintone_users_api']
     
     url = "https://urban-pulse.kintone.com/k/v1/record.json"
     headers = {
-        "X-Cybozu-API-Token": kintone_api,
+        "X-Cybozu-API-Token": kintone_users_api,
         "Content-Type": "application/json"
     }
     payload = {
@@ -75,14 +75,14 @@ def read_records():
     with open('api.yaml', 'r') as file:
         data_loaded = yaml.safe_load(file)
 
-    kintone_api = data_loaded['kintone_api']
+    kintone_users_api = data_loaded['kintone_users_api']
 
     url = "https://urban-pulse.kintone.com/k/v1/records.json"
     params = {
         "app": 1
     }
     headers = {
-        "X-Cybozu-API-Token": kintone_api
+        "X-Cybozu-API-Token": kintone_users_api
     }
     
     all_records = []

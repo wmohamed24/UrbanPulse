@@ -3,9 +3,10 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 // Define the shape of your context state
 interface AuthState {
   isLoggedIn: boolean;
-  login: (userId: string) => void;
+  login: (userId: string, onTrip: boolean) => void;
   logout: () => void;
   userId: string | null;
+  onTrip: boolean;
 }
 
 // Create the context with a default value
@@ -28,21 +29,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.getItem("userId")
   );
 
-  const login = (userId: string) => {
+  const [onTrip, setOnTrip] = useState(
+    localStorage.getItem("onTrip") === "true"
+  );
+
+  const login = (userId: string, onTrip: boolean) => {
     localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("userId", userId);
+    localStorage.setItem("onTrip", onTrip.toString());
+    setOnTrip(onTrip);
     setIsLoggedIn(true);
     setUserId(userId);
   };
   const logout = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userId");
+    localStorage.removeItem("onTrip");
     setIsLoggedIn(false);
     setUserId(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, userId, onTrip, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

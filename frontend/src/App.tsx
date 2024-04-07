@@ -4,6 +4,7 @@ import LandingPage from "./components/LandingPage";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import Profile from "./components/Profle";
+import FeedbackForm from "./components/FeedbackForm";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/Feedbackform" element={<FeedbackForm />} />
     </Routes>
   );
 }

@@ -11,7 +11,7 @@ const LandingPage = () => {
   return (
     <Box textAlign="center" mt="100px">
       <VStack spacing={4}>
-        <Heading>Welcome to Our Accessibility App</Heading>
+        <Heading>Welcome to Urban Pulse: where your voice matters</Heading>
         <Text>Make urban living accessible for everyone.</Text>
         <Box>
           <Button

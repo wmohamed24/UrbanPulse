@@ -44,7 +44,7 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json(); // Assuming your server responds with JSON
         // Handle login success
-        login(data.id);
+        login(data.id, data.on_trip);
 
         toast({
           title: "Login successful.",
