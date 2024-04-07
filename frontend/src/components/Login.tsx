@@ -12,9 +12,14 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { useAuth } from "../AuthContext";
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { isLoggedIn, login } = useAuth();
+
+  if (isLoggedIn) {
+    return <Navigate to="/profile" replace />;
+  }
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,9 +42,9 @@ const Login = () => {
       });
 
       if (response.ok) {
-        await response.json(); // Assuming your server responds with JSON
+        const data = await response.json(); // Assuming your server responds with JSON
         // Handle login success
-        login();
+        login(data.id);
 
         toast({
           title: "Login successful.",

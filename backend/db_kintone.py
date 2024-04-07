@@ -1,6 +1,30 @@
 import requests
 import yaml
 from werkzeug.security import  check_password_hash
+from flask import jsonify
+
+def get_kintone_record(record_id, app_id):
+    with open('api.yaml', 'r') as file:
+        data_loaded = yaml.safe_load(file)
+
+    kintone_api = data_loaded['kintone_api']
+    url = "https://urban-pulse.kintone.com/k/v1/record.json"
+    headers = {
+        'X-Cybozu-API-Token': kintone_api,
+    }
+    params = {
+        'app': app_id,
+        'id': record_id
+    }
+    
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()  # This will raise an HTTPError if the HTTP request returned an unsuccessful status code
+        return jsonify(response.json()), 200
+    except requests.exceptions.RequestException as e:
+        print(str(e))
+        return jsonify({'error': str(e)}), 500
+
 
 def check_credentials(email, password, records):
     for record in records:
@@ -10,7 +34,7 @@ def check_credentials(email, password, records):
             hashed_password = record['password']['value']
             # The password field from Kintone record includes the hash type and hash parameters, hence split by '$'
             if hashed_password and check_password_hash(hashed_password, password):
-                return True
+                return True, record['id']['value']
 
     return False
 

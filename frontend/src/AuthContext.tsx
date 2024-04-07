@@ -3,8 +3,9 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 // Define the shape of your context state
 interface AuthState {
   isLoggedIn: boolean;
-  login: () => void;
+  login: (userId: string) => void;
   logout: () => void;
+  userId: string | null;
 }
 
 // Create the context with a default value
@@ -20,13 +21,28 @@ interface AuthProviderProps {
 
 // Define a provider component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
+    Boolean(localStorage.getItem("isLoggedIn"))
+  );
+  const [userId, setUserId] = useState<string | null>(
+    localStorage.getItem("userId")
+  );
 
-  const login = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+  const login = (userId: string) => {
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("userId", userId);
+    setIsLoggedIn(true);
+    setUserId(userId);
+  };
+  const logout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userId");
+    setIsLoggedIn(false);
+    setUserId(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, userId, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

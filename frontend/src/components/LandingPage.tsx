@@ -1,6 +1,13 @@
 import { Box, Button, Text, VStack, Heading } from "@chakra-ui/react";
+import { useAuth } from "../AuthContext";
+import { Navigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const { isLoggedIn } = useAuth();
+
+  if (isLoggedIn) {
+    return <Navigate to="/profile" replace />;
+  }
   return (
     <Box textAlign="center" mt="100px">
       <VStack spacing={4}>

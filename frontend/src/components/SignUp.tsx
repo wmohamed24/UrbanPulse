@@ -10,9 +10,16 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import InputField from "./InputField";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 const SignUp = () => {
+  const { isLoggedIn } = useAuth();
+
+  if (isLoggedIn) {
+    return <Navigate to="/profile" replace />;
+  }
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");

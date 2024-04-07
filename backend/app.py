@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-from db_kintone import add_user_to_kintone, read_records, check_credentials
+from db_kintone import add_user_to_kintone, read_records, check_credentials, get_kintone_record
+
 
 app = Flask(__name__)
 CORS(app)
@@ -11,10 +12,7 @@ users_db = {}
 
 @app.route('/register', methods=['POST'])
 def register():
-    data = request.get_json()
-    
-    print(data)
-    
+    data = request.get_json()    
     hashed_password = generate_password_hash(data['password'])
     data['password'] = hashed_password
     
@@ -34,12 +32,21 @@ def login():
     password = data.get('password')
 
     # Now call the function to check these credentials against Kintone records
-    if check_credentials(email, password, records):
+    found, id = check_credentials(email, password, records)
+    if found:
         # Login successful
-        return jsonify({'message': 'Login successful'}), 200
+        return jsonify({'message': 'Login successful', 'id': id}), 200
     else:
         # Login failed
         return jsonify({'message': 'Invalid email or password'}), 401
+    
+
+@app.route('/get_kintone_record', methods=['GET'])
+def read_user_data():
+
+    record_id = request.args.get('id')
+    app_id = 1
+    return get_kintone_record(record_id, app_id)
 
 if __name__ == '__main__':
     app.run(debug=True, port='8080')
