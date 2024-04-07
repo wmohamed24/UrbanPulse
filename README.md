@@ -74,14 +74,6 @@ Distributed under the MIT License. See LICENSE for more information.
 
 ## Contact
 
-- Project Link: https://github.com/wmohamed24/UrbanPulse
+- Email: wmohamed@colgate.edu
+- Phone: 315-273-9257
 
-## Acknowledgments
-
-- Flask
-- React
-- Mapbox
-- Chakra UI
-- Kintone
-- Axios
-- React Router
