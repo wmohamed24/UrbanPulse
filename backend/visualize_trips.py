@@ -107,7 +107,6 @@ def process_and_visualize_routes(routes_with_disabilities):
     }
     
     # Initialize your Folium map here
-    print(f"\n\n\n {routes_with_disabilities[0]['coordinates']} \n\n\n")
     m = folium.Map(location=[routes_with_disabilities[0]['coordinates'][0][1], routes_with_disabilities[0]['coordinates'][0][0]], zoom_start=12)
 
     for route_info in routes_with_disabilities:

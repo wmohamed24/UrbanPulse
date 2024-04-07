@@ -63,7 +63,6 @@ def add_user_to_kintone(data):
             "disability_type": {"value": data['disabilityType']},
         }
     }
-    print(payload, "\n")
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
         return True

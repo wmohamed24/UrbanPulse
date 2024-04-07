@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from db_kintone import add_user_to_kintone, read_records, check_credentials, get_kintone_record
 from trips_data import read_trips_data
 from visualize_trips import process_and_visualize_routes
+from process_trip import process_trip
 
 app = Flask(__name__)
 CORS(app)
@@ -63,7 +64,11 @@ def analyze_trips_data():
     process_and_visualize_routes(routes[:10])
     return send_from_directory('./visuals', 'mapbox_route_visualization.html')
 
-
+@app.route('/add_trip', methods=['POST'])
+def log_trip():
+    trip_data = request.json
+    process_trip(trip_data)
+    return jsonify({'status': 'success'}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, port='8080')
