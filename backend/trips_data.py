@@ -1,8 +1,6 @@
 import yaml, requests
-import json
 import re
 import ast
-import pandas as pd
 from ast import literal_eval
 
 def read_records():
