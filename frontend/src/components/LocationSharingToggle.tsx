@@ -1,5 +1,4 @@
 import { FormControl, FormLabel, Switch } from "@chakra-ui/react";
-import { useState } from "react";
 
 interface Probs {
   isLocationSharingEnabled: boolean;
